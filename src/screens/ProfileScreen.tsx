@@ -1,4 +1,4 @@
-import { SectionHeader } from '../components/SectionHeader'
+import { AppHeader } from '../components/AppHeader'
 import type { Instructor, TrainingGroup } from '../types'
 
 interface ProfileScreenProps {
@@ -10,10 +10,16 @@ interface ProfileScreenProps {
 export function ProfileScreen({ instructor, groups, onReports }: ProfileScreenProps) {
   return (
     <div className="screen-stack">
-      <SectionHeader
-        eyebrow="Cuenta"
-        title="Perfil del instructor"
-        description="Información laboral y asignación académica disponible en la demo."
+      <AppHeader
+        eyebrow="INSTRUCTOR"
+        title="Mi perfil"
+        subtitle="Información básica y asignaciones del instructor."
+        statusBadge={instructor.contractType}
+        infoCards={[
+          { label: 'Área', value: instructor.knowledgeArea },
+          { label: 'Fichas', value: groups.length },
+          { label: 'Horas', value: instructor.weeklyHours },
+        ]}
       />
 
       <section className="profile-card">

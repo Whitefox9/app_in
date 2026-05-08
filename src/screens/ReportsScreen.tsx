@@ -1,6 +1,6 @@
+import { AppHeader } from '../components/AppHeader'
 import { useMemo, useState } from 'react'
 import { MetricCard } from '../components/MetricCard'
-import { SectionHeader } from '../components/SectionHeader'
 import type { AttendanceRecord, TrainingGroup } from '../types'
 import { summarizeAttendance } from '../utils/attendance'
 import { shortDate } from '../utils/format'
@@ -29,13 +29,16 @@ export function ReportsScreen({ groups, records, onBack }: ReportsScreenProps) {
 
   return (
     <div className="screen-stack">
-      <button type="button" className="back-button" onClick={onBack}>
-        ‹ Volver
-      </button>
-      <SectionHeader
-        eyebrow="Indicadores"
-        title="Reportes"
-        description="Resumen demostrativo de llamados de asistencia e indicadores por ficha."
+      <AppHeader
+        eyebrow="REPORTES"
+        title="Reportes de asistencia"
+        subtitle="Consulta y genera consolidados de asistencia."
+        backButton={{ onClick: onBack }}
+        infoCards={[
+          { label: 'Fichas', value: groups.length },
+          { label: 'Periodo', value: records.at(0)?.date ?? 'Demo' },
+          { label: 'Registros', value: records.length },
+        ]}
       />
 
       <section className="metric-grid compact">

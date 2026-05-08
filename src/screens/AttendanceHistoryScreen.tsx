@@ -1,5 +1,5 @@
+import { AppHeader } from '../components/AppHeader'
 import { MetricCard } from '../components/MetricCard'
-import { SectionHeader } from '../components/SectionHeader'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
 import type { AttendanceRecord, AttendanceStatus, Learner, TrainingGroup } from '../types'
 import { attendanceLabels, summarizeAttendance } from '../utils/attendance'
@@ -36,13 +36,17 @@ export function AttendanceHistoryScreen({
 
   return (
     <div className="screen-stack">
-      <button type="button" className="back-button" onClick={onBack}>
-        ‹ Volver a ficha
-      </button>
-      <SectionHeader
-        eyebrow={`Ficha ${group.number}`}
-        title="Historial de asistencia"
-        description={`${group.program} · ${group.shift}`}
+      <AppHeader
+        eyebrow="HISTÓRICO"
+        title="Consulta de asistencia"
+        subtitle="Filtra registros por fecha, mes, aprendiz o estado."
+        statusBadge={`Ficha ${group.number}`}
+        backButton={{ label: '‹ Volver a ficha', onClick: onBack }}
+        infoCards={[
+          { label: 'Ficha', value: group.number },
+          { label: 'Periodo', value: groupRecords[0]?.date ?? 'Sin registros' },
+          { label: 'Registros', value: groupRecords.length },
+        ]}
       />
 
       <section className="metric-grid compact">

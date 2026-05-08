@@ -42,7 +42,69 @@ select {
 }
 
 button {
+  position: relative;
+  overflow: hidden;
   cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(21, 163, 199, 0.28);
+  outline-offset: 2px;
+}
+
+.button-ripple {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgba(23, 105, 170, 0.2);
+  transform: scale(0);
+  animation: buttonRipple 520ms ease-out;
+}
+
+.primary .button-ripple,
+.app-header-back .button-ripple,
+.management-actions button:first-child .button-ripple {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.primary.ghost .button-ripple,
+.group-action .button-ripple,
+.secondary-action .button-ripple,
+.back-button .button-ripple,
+.text-button .button-ripple,
+.quick-actions button .button-ripple,
+.report-mode-card .button-ripple,
+.management-actions button .button-ripple {
+  background: rgba(23, 105, 170, 0.2);
+}
+
+@keyframes buttonRipple {
+  to {
+    opacity: 0;
+    transform: scale(4);
+  }
+}
+
+@keyframes screenFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 h1,
@@ -90,6 +152,7 @@ dl {
   display: flex;
   flex-direction: column;
   gap: 18px;
+  animation: screenFadeUp 260ms ease both;
 }
 
 .login-card {
@@ -287,6 +350,109 @@ select:focus {
   font-size: 1.75rem;
 }
 
+.app-header {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 26px;
+  color: #fff;
+  background:
+    linear-gradient(135deg, rgba(11, 31, 58, 0.98), rgba(23, 105, 170, 0.94)),
+    radial-gradient(circle at top right, rgba(21, 163, 199, 0.26), transparent 36%);
+  box-shadow: 0 18px 36px rgba(11, 31, 58, 0.18);
+}
+
+.app-header.compact {
+  gap: 14px;
+  padding: 18px;
+}
+
+.app-header-back {
+  justify-self: start;
+  min-height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 13px;
+  padding: 0 11px;
+  color: #e9f8ff;
+  background: rgba(255, 255, 255, 0.12);
+  font-weight: 850;
+}
+
+.app-header-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-header-topline span {
+  border-radius: 999px;
+  padding: 7px 11px;
+  color: #dff7ff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.app-header-topline strong {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 7px 11px;
+  color: #0f6f4a;
+  background: #e9f8f1;
+  font-size: 0.76rem;
+}
+
+.app-header-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.app-header h1 {
+  color: #fff;
+  font-size: 1.55rem;
+  line-height: 1.08;
+}
+
+.app-header p {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.35;
+}
+
+.app-header-info {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.app-header-info article {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.app-header-info span {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.app-header-info strong {
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -457,18 +623,18 @@ select:focus {
 .timeline,
 .assigned-groups {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .group-card {
   padding: 0;
   border-radius: 24px;
   background: #fff;
-  border: 1px solid rgba(11, 31, 58, 0.1);
+  border: 1px solid rgba(11, 31, 58, 0.12);
   display: grid;
   gap: 0;
   overflow: hidden;
-  box-shadow: 0 16px 34px rgba(11, 31, 58, 0.12);
+  box-shadow: 0 18px 38px rgba(11, 31, 58, 0.14);
 }
 
 .groups-summary-panel {
@@ -520,6 +686,7 @@ select:focus {
   padding: 18px;
   color: #fff;
   background: linear-gradient(135deg, var(--navy), var(--blue));
+  border-radius: 24px 24px 0 0;
 }
 
 .group-card-header div {
@@ -556,6 +723,7 @@ select:focus {
   display: grid;
   gap: 15px;
   padding: 18px;
+  background: #fff;
 }
 
 .group-program-row {
@@ -634,6 +802,18 @@ select:focus {
 
 .group-action {
   margin: 0 18px 18px;
+  color: #0f5f99;
+  background: #eef7ff;
+  border: 1px solid #b8ddf3;
+  box-shadow: 0 8px 18px rgba(23, 105, 170, 0.1);
+  font-weight: 850;
+}
+
+.group-action:hover,
+.group-action:focus-visible {
+  background: #e4f2fb;
+  border-color: rgba(23, 105, 170, 0.38);
+  outline: none;
 }
 
 .card-topline,
@@ -1668,6 +1848,54 @@ dd {
   background: var(--red);
 }
 
+.group-card,
+.attendance-ficha-card,
+.learner-action,
+.report-mode-card,
+.quick-actions button,
+.management-actions button {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.group-card:hover,
+.group-card:focus-within {
+  border-color: rgba(21, 163, 199, 0.24);
+  box-shadow: 0 22px 44px rgba(11, 31, 58, 0.18);
+  transform: translateY(-1px);
+}
+
+.group-card:active,
+.attendance-ficha-card:active,
+.learner-action:active,
+.report-mode-card:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.attendance-ficha-card:hover,
+.attendance-ficha-card:focus-within,
+.quick-actions button:hover,
+.quick-actions button:focus-visible,
+.management-actions button:hover,
+.management-actions button:focus-visible,
+.report-mode-card:hover,
+.report-mode-card:focus-visible {
+  box-shadow: 0 12px 24px rgba(11, 31, 58, 0.1);
+  transform: translateY(-1px);
+}
+
+.group-action:active,
+.primary:active,
+.secondary-action:active,
+.back-button:active,
+.text-button:active,
+.app-header-back:active {
+  transform: scale(0.97);
+}
+
 @media (max-width: 520px) {
   .login-shell,
   .app-shell {
@@ -1708,6 +1936,7 @@ dd {
   .quick-actions,
   .groups-summary-grid,
   .group-metric-row,
+  .app-header-info,
   .legend-card,
   .management-actions,
   .form-actions,

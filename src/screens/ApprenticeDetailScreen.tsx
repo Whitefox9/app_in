@@ -1,5 +1,5 @@
+import { AppHeader } from '../components/AppHeader'
 import { RecentAttendanceList } from '../components/RecentAttendanceList'
-import { SectionHeader } from '../components/SectionHeader'
 import type { AttendanceRecord, Learner, TrainingGroup } from '../types'
 
 interface ApprenticeDetailScreenProps {
@@ -17,13 +17,16 @@ export function ApprenticeDetailScreen({
 }: ApprenticeDetailScreenProps) {
   return (
     <div className="screen-stack">
-      <button type="button" className="back-button" onClick={onBack}>
-        ‹ Volver a ficha
-      </button>
-      <SectionHeader
-        eyebrow="Detalle del aprendiz"
+      <AppHeader
+        eyebrow="APRENDIZ"
         title={learner.name}
-        description={`${learner.documentType} ${learner.documentNumber}`}
+        subtitle={`${learner.documentType} ${learner.documentNumber} · Ficha ${group.number}`}
+        backButton={{ label: '‹ Volver a ficha', onClick: onBack }}
+        infoCards={[
+          { label: 'Programa', value: group.program },
+          { label: 'Teléfono', value: learner.phone },
+          { label: 'Ficha', value: group.number },
+        ]}
       />
 
       <section className="student-profile-card">

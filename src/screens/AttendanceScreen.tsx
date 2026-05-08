@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
+import { AppHeader } from '../components/AppHeader'
 import { LearnerRow } from '../components/LearnerRow'
 import { MetricCard } from '../components/MetricCard'
-import { SectionHeader } from '../components/SectionHeader'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
 import type {
   AttendanceRecord,
@@ -56,6 +56,7 @@ export function AttendanceScreen({
 
   const summary = useMemo(() => summarizeAttendance(statuses), [statuses])
   const todaySessionsCount = sessions.filter((session) => session.date === today).length
+  const registeredTodayCount = records.filter((record) => record.date === date).length
 
   function startAttendance(nextGroupId: string) {
     const nextGroup = groups.find((group) => group.id === nextGroupId) ?? groups[0]
@@ -105,10 +106,15 @@ export function AttendanceScreen({
   if (!selectedCallGroupId) {
     return (
       <div className="screen-stack">
-        <SectionHeader
-          eyebrow="Control diario"
-          title="Registrar asistencia"
-          description="Selecciona la ficha para realizar el llamado de asistencia."
+        <AppHeader
+          eyebrow="CONTROL DIARIO"
+          title="Asistencia"
+          subtitle="Registra, consulta y genera reportes de asistencia."
+          infoCards={[
+            { label: 'Pendientes', value: Math.max(groups.length - registeredTodayCount, 0) },
+            { label: 'Registradas', value: registeredTodayCount },
+            { label: 'Fichas del día', value: todaySessionsCount || groups.length },
+          ]}
         />
 
         <section className="attendance-summary-card">
@@ -168,23 +174,21 @@ export function AttendanceScreen({
 
   return (
     <div className="screen-stack">
-      {openedFromGroupDetail ? (
-        <button
-          type="button"
-          className="back-button"
-          onClick={() => onBackToGroup?.(activeGroup.id)}
-        >
-          ‹ Volver a ficha
-        </button>
-      ) : (
-        <button type="button" className="back-button" onClick={() => setSelectedCallGroupId(null)}>
-          Cambiar ficha
-        </button>
-      )}
-      <SectionHeader
-        eyebrow={`Ficha ${activeGroup.number}`}
+      <AppHeader
+        eyebrow="LLAMADO DE ASISTENCIA"
         title="Registrar asistencia"
-        description="Marca el estado de cada aprendiz con las convenciones institucionales."
+        subtitle="Marca el estado de cada aprendiz para la fecha seleccionada."
+        statusBadge={`Ficha ${activeGroup.number}`}
+        backButton={
+          openedFromGroupDetail
+            ? { label: '‹ Volver a ficha', onClick: () => onBackToGroup?.(activeGroup.id) }
+            : { label: 'Cambiar ficha', onClick: () => setSelectedCallGroupId(null) }
+        }
+        infoCards={[
+          { label: 'Ficha', value: activeGroup.number },
+          { label: 'Fecha', value: date },
+          { label: 'Aprendices', value: groupLearners.length },
+        ]}
       />
 
       <section className="attendance-toolbar">

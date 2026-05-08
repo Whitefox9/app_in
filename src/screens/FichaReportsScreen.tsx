@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
+import { AppHeader } from '../components/AppHeader'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
 import { MetricCard } from '../components/MetricCard'
-import { SectionHeader } from '../components/SectionHeader'
 import type {
   AttendanceRecord,
   AttendanceStatus,
@@ -351,13 +351,17 @@ export function FichaReportsScreen({
 
   return (
     <div className="screen-stack">
-      <button type="button" className="back-button" onClick={onBack}>
-        ‹ Volver a ficha
-      </button>
-      <SectionHeader
-        eyebrow={`Ficha ${group.number}`}
+      <AppHeader
+        eyebrow="REPORTES"
         title="Reportes de asistencia"
-        description="Consulta y genera reportes de asistencia de la ficha."
+        subtitle="Consulta y genera consolidados de asistencia."
+        statusBadge={`Ficha ${group.number}`}
+        backButton={{ label: '‹ Volver a ficha', onClick: onBack }}
+        infoCards={[
+          { label: 'Ficha', value: group.number },
+          { label: 'Periodo', value: periodMode === 'month' ? monthLabel(selectedMonth) : 'Inicio' },
+          { label: 'Aprendices', value: learners.length },
+        ]}
       />
 
       <section className="report-mode-grid" aria-label="Tipos de reporte">

@@ -1,7 +1,7 @@
+import { AppHeader } from '../components/AppHeader'
 import { MetricCard } from '../components/MetricCard'
 import { SectionHeader } from '../components/SectionHeader'
 import type { ClassSession, Instructor, TabKey, TrainingGroup } from '../types'
-import { formatDisplayDate } from '../utils/format'
 
 interface DashboardScreenProps {
   instructor: Instructor
@@ -27,17 +27,17 @@ export function DashboardScreen({
 
   return (
     <div className="screen-stack">
-      <section className="dashboard-hero">
-        <div>
-          <span>{formatDisplayDate(new Date())}</span>
-          <h1>Hola, {instructor.name.split(' ')[0]}</h1>
-          <p>Tu jornada académica y operativa está lista para seguimiento.</p>
-        </div>
-        <div className="hero-badge">
-          <strong>{todaySessions.length || 2}</strong>
-          <span>clases hoy</span>
-        </div>
-      </section>
+      <AppHeader
+        eyebrow="INSTRUCTOR"
+        title="Panel operativo"
+        subtitle="Consulta tus actividades, fichas y novedades del día."
+        statusBadge={instructor.name.split(' ')[0]}
+        infoCards={[
+          { label: 'Fichas hoy', value: todaySessions.length || 2 },
+          { label: 'Pendientes', value: pendingAttendance },
+          { label: 'Próxima clase', value: nextSession.time.split(' - ')[0] },
+        ]}
+      />
 
       <section>
         <SectionHeader title="Resumen de la jornada" />

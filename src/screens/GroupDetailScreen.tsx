@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { AppHeader } from '../components/AppHeader'
 import { FichaManagementActions } from '../components/FichaManagementActions'
 import { FichaNoveltyForm } from '../components/FichaNoveltyForm'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
@@ -77,35 +78,18 @@ export function GroupDetailScreen({
 
   return (
     <div className="screen-stack">
-      <button type="button" className="back-button" onClick={onBack}>
-        ‹ Volver
-      </button>
-      <section className="group-detail-hero">
-        <div className="group-detail-hero-top">
-          <span>Ficha {group.number}</span>
-          <strong>{group.status}</strong>
-        </div>
-        <h1>{group.program}</h1>
-        <p>{group.shift} · {group.location}</p>
-        <div className="group-detail-facts">
-          <article>
-            <span>Horario</span>
-            <strong>{group.schedule}</strong>
-          </article>
-          <article>
-            <span>Instructor</span>
-            <strong>{instructor.name}</strong>
-          </article>
-          <article>
-            <span>{group.locationType}</span>
-            <strong>{group.environment}</strong>
-          </article>
-          <article>
-            <span>Estado</span>
-            <strong>{group.status}</strong>
-          </article>
-        </div>
-      </section>
+      <AppHeader
+        eyebrow={`FICHA ${group.number}`}
+        title={group.program}
+        subtitle={`${group.shift} · ${group.location}`}
+        statusBadge={group.status}
+        backButton={{ onClick: onBack }}
+        infoCards={[
+          { label: 'Horario', value: group.schedule },
+          { label: 'Instructor', value: instructor.name },
+          { label: group.locationType, value: group.environment },
+        ]}
+      />
 
       <FichaManagementActions
         onRegisterAttendance={() => onAttendance(group.id)}

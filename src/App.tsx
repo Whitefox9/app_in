@@ -17,11 +17,14 @@ import { GroupsScreen } from './screens/GroupsScreen'
 import { LoginScreen } from './screens/LoginScreen'
 import { ProfileScreen } from './screens/ProfileScreen'
 import { ReportsScreen } from './screens/ReportsScreen'
+import { useRipple } from './hooks/useRipple'
 import type { AttendanceRecord, FichaNovelty, TabKey } from './types'
 
 type AppView = TabKey | 'groupDetail' | 'groupHistory' | 'groupReports' | 'reports'
 
 function App() {
+  useRipple()
+
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [activeTab, setActiveTab] = useState<TabKey>('home')
   const [activeView, setActiveView] = useState<AppView>('home')

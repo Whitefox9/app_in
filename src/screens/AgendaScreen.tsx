@@ -1,4 +1,4 @@
-import { SectionHeader } from '../components/SectionHeader'
+import { AppHeader } from '../components/AppHeader'
 import type { ClassSession, TrainingGroup } from '../types'
 import { shortDate } from '../utils/format'
 
@@ -8,12 +8,22 @@ interface AgendaScreenProps {
 }
 
 export function AgendaScreen({ sessions, groups }: AgendaScreenProps) {
+  const today = new Date().toISOString().slice(0, 10)
+  const todaySessions = sessions.filter((session) => session.date === today)
+  const nextSession = todaySessions[0] ?? sessions[0]
+  const nextGroup = groups.find((group) => group.id === nextSession?.groupId)
+
   return (
     <div className="screen-stack">
-      <SectionHeader
-        eyebrow="Planeación"
-        title="Agenda académica"
-        description="Sesiones programadas por fecha, ficha, ambiente y estado operativo."
+      <AppHeader
+        eyebrow="PROGRAMACIÓN"
+        title="Agenda"
+        subtitle="Consulta tus clases, horarios y ambientes asignados."
+        infoCards={[
+          { label: 'Clases hoy', value: todaySessions.length || sessions.length },
+          { label: 'Próxima clase', value: nextSession?.time.split(' - ')[0] ?? 'Sin clases' },
+          { label: 'Jornada', value: nextGroup?.shift ?? 'Asignada' },
+        ]}
       />
 
       <div className="timeline">
