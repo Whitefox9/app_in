@@ -41,7 +41,7 @@ const tutorialSteps: TutorialStep[] = [
     target: 'bottom-nav-attendance',
     title: 'Asistencia',
     description:
-      'Acceso rápido para tomar asistencia, consultar llamados anteriores o generar reportes.',
+      'Usa este módulo cuando necesitas tomar asistencia rápidamente. Para reportes, historial y novedades entra desde Fichas.',
   },
   {
     target: 'bottom-nav-agenda',

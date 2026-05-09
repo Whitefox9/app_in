@@ -1416,8 +1416,13 @@ select:focus {
 }
 
 .card-topline .attendance-badge.pendiente {
-  color: var(--blue);
-  background: #eaf5fb;
+  color: #7a4d09;
+  background: #ffe6ad;
+}
+
+.card-topline .attendance-badge.sin-clase {
+  color: #4b5b70;
+  background: #eef2f6;
 }
 
 .card-facts,

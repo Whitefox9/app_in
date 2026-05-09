@@ -56,19 +56,19 @@ export const contextualGuides: Record<ContextualGuideKey, ContextualGuideDefinit
     title: 'Guía rápida de Asistencia',
     steps: [
       {
+        title: 'Ficha disponible',
+        description: 'Selecciona la ficha a la que vas a tomar asistencia.',
+        target: 'guide-attendance-ficha-card',
+      },
+      {
+        title: 'Estado operativo',
+        description: 'Este estado te indica si la asistencia está pendiente, registrada o si no hay clase hoy.',
+        target: 'guide-attendance-operational-status',
+      },
+      {
         title: 'Tomar asistencia',
-        description: 'Usa esta opción para registrar el llamado diario.',
+        description: 'Usa este botón para abrir el llamado de la ficha seleccionada.',
         target: 'guide-attendance-take',
-      },
-      {
-        title: 'Consultar asistencia',
-        description: 'Consulta llamados anteriores por fecha, mes o aprendiz.',
-        target: 'guide-attendance-history',
-      },
-      {
-        title: 'Generar reporte',
-        description: 'Crea consolidados de asistencia para coordinación.',
-        target: 'guide-attendance-report',
       },
     ],
   },

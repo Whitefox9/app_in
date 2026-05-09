@@ -17,8 +17,6 @@ import {
   summarizeAttendance,
 } from '../utils/attendance'
 
-type AttendanceQuickAction = 'home' | 'take' | 'history' | 'reports'
-
 interface AttendanceScreenProps {
   groups: TrainingGroup[]
   learners: Learner[]
@@ -28,8 +26,6 @@ interface AttendanceScreenProps {
   openedFromGroupDetail?: boolean
   onSave: (record: AttendanceRecord) => void
   onBackToGroup?: (groupId: string) => void
-  onOpenHistory?: (groupId: string) => void
-  onOpenReports?: (groupId: string) => void
 }
 
 export function AttendanceScreen({
@@ -41,11 +37,8 @@ export function AttendanceScreen({
   openedFromGroupDetail = false,
   onSave,
   onBackToGroup,
-  onOpenHistory,
-  onOpenReports,
 }: AttendanceScreenProps) {
   const today = new Date().toISOString().slice(0, 10)
-  const [quickAction, setQuickAction] = useState<AttendanceQuickAction>(selectedGroupId ? 'take' : 'home')
   const [date, setDate] = useState(today)
   const [selectedCallGroupId, setSelectedCallGroupId] = useState<string | null>(selectedGroupId ?? null)
   const [candidateGroupId, setCandidateGroupId] = useState(groups[0]?.id ?? '')
@@ -111,97 +104,22 @@ export function AttendanceScreen({
     return 'Pendiente'
   }
 
-  function handleQuickGroupAction(groupId: string) {
-    if (quickAction === 'history') {
-      onOpenHistory?.(groupId)
-      return
-    }
+  function getGroupOperationalStatus(groupId: string) {
+    const hasTodaySession = sessions.some((session) => session.groupId === groupId && session.date === today)
+    const hasTodayAttendance = records.some((record) => record.groupId === groupId && record.date === today)
 
-    if (quickAction === 'reports') {
-      onOpenReports?.(groupId)
-      return
-    }
-
-    startAttendance(groupId)
-  }
-
-  if (!selectedCallGroupId && quickAction === 'home') {
-    return (
-      <div className="screen-stack">
-        <AppHeader
-          eyebrow="CONTROL DIARIO"
-          title="Asistencia"
-          subtitle="Acceso rápido para registrar, consultar y reportar llamados de asistencia."
-          infoCards={[
-            { label: 'Pendientes', value: Math.max(groups.length - registeredTodayCount, 0) },
-            { label: 'Registradas', value: registeredTodayCount },
-            { label: 'Fichas del día', value: todaySessionsCount || groups.length },
-          ]}
-        />
-
-        <section className="attendance-quick-panel">
-          <div className="list-header">
-            <h2>¿Qué deseas hacer?</h2>
-            <span>Operación diaria</span>
-          </div>
-          <div className="attendance-quick-actions">
-            <button
-              type="button"
-              className="attendance-quick-action primary-action"
-              onClick={() => setQuickAction('take')}
-              data-guide="guide-attendance-take"
-            >
-              <span aria-hidden="true">A</span>
-              <strong>Tomar asistencia</strong>
-              <small>Selecciona una ficha y registra el llamado del día.</small>
-            </button>
-            <button
-              type="button"
-              className="attendance-quick-action"
-              onClick={() => setQuickAction('history')}
-              data-guide="guide-attendance-history"
-            >
-              <span aria-hidden="true">H</span>
-              <strong>Consultar asistencia</strong>
-              <small>Busca llamados anteriores por fecha, mes o aprendiz.</small>
-            </button>
-            <button
-              type="button"
-              className="attendance-quick-action"
-              onClick={() => setQuickAction('reports')}
-              data-guide="guide-attendance-report"
-            >
-              <span aria-hidden="true">R</span>
-              <strong>Generar reporte</strong>
-              <small>Crea consolidados de asistencia para coordinación.</small>
-            </button>
-          </div>
-        </section>
-      </div>
-    )
+    if (hasTodayAttendance) return { label: 'Asistencia registrada', tone: 'registrada' }
+    if (!hasTodaySession) return { label: 'Sin clase hoy', tone: 'sin-clase' }
+    return { label: 'Asistencia pendiente', tone: 'pendiente' }
   }
 
   if (!selectedCallGroupId) {
-    const selectorTitle = quickAction === 'take' ? 'Selecciona una ficha para el llamado' : 'Selecciona una ficha'
-    const selectorDescription =
-      quickAction === 'history'
-        ? 'Elige la ficha que deseas consultar.'
-        : quickAction === 'reports'
-          ? 'Elige la ficha para generar el reporte.'
-          : 'Selecciona una para iniciar el llamado.'
-    const actionLabel =
-      quickAction === 'history'
-        ? 'Consultar historial'
-        : quickAction === 'reports'
-          ? 'Generar reporte'
-          : 'Tomar asistencia'
-
     return (
       <div className="screen-stack">
         <AppHeader
           eyebrow="CONTROL DIARIO"
-          title="Asistencia"
-          subtitle="Acceso rápido para registrar, consultar y reportar llamados de asistencia."
+          title="Tomar asistencia"
+          subtitle="Selecciona una ficha para iniciar el llamado."
           infoCards={[
             { label: 'Pendientes', value: Math.max(groups.length - registeredTodayCount, 0) },
             { label: 'Registradas', value: registeredTodayCount },
@@ -210,16 +128,13 @@ export function AttendanceScreen({
         />
 
         <section className="attendance-summary-card">
-          <strong>{selectorTitle}</strong>
-          <span>{selectorDescription}</span>
-          <button type="button" className="attendance-options-link" onClick={() => setQuickAction('home')}>
-            ‹ Opciones de asistencia
-          </button>
+          <strong>Acceso rápido al llamado</strong>
+          <span>Elige una ficha y registra la asistencia del día o de otra fecha.</span>
         </section>
 
         <section className="attendance-selector-list">
-          {groups.map((group) => {
-            const status = getGroupAttendanceStatus(group.id)
+          {groups.map((group, index) => {
+            const operationalStatus = getGroupOperationalStatus(group.id)
             const isSelected = candidateGroupId === group.id
 
             return (
@@ -227,11 +142,15 @@ export function AttendanceScreen({
                 key={group.id}
                 className={isSelected ? 'attendance-ficha-card selected' : 'attendance-ficha-card'}
                 onClick={() => setCandidateGroupId(group.id)}
+                data-guide={index === 0 ? 'guide-attendance-ficha-card' : undefined}
               >
                 <div className="card-topline">
                   <span>Ficha {group.number}</span>
-                  <strong className={`attendance-badge ${status.toLowerCase().replace(' ', '-')}`}>
-                    {status}
+                  <strong
+                    className={`attendance-badge ${operationalStatus.tone}`}
+                    data-guide={index === 0 ? 'guide-attendance-operational-status' : undefined}
+                  >
+                    {operationalStatus.label}
                   </strong>
                 </div>
                 <h2>{group.program}</h2>
@@ -254,10 +173,11 @@ export function AttendanceScreen({
                   className="primary"
                   onClick={(event) => {
                     event.stopPropagation()
-                    handleQuickGroupAction(group.id)
+                    startAttendance(group.id)
                   }}
+                  data-guide={index === 0 ? 'guide-attendance-take' : undefined}
                 >
-                  {actionLabel}
+                  Tomar asistencia
                 </button>
               </article>
             )

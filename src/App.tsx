@@ -289,8 +289,6 @@ function App() {
           openedFromGroupDetail={attendanceFromGroupDetail}
           onSave={saveAttendance}
           onBackToGroup={backToSelectedGroup}
-          onOpenHistory={openGroupHistory}
-          onOpenReports={openGroupReports}
         />
       ) : null}
 
