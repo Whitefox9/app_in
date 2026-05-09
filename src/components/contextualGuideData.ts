@@ -46,7 +46,7 @@ export const contextualGuides: Record<ContextualGuideKey, ContextualGuideDefinit
         target: 'guide-register-attendance-action',
       },
       {
-        title: 'Perfil e historial',
+        title: 'Ver perfil',
         description: 'Toca un aprendiz para ver su información e historial.',
         target: 'guide-learner-profile-card',
       },

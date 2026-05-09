@@ -179,7 +179,7 @@ export function GroupDetailScreen({
                     )}
                   </span>
                 </span>
-                <small>Perfil e historial →</small>
+                <small>Ver perfil →</small>
               </button>
             )
           })}
