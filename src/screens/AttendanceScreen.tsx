@@ -210,14 +210,6 @@ export function AttendanceScreen({
             <span aria-hidden="true">Cambiar</span>
           </span>
         </label>
-        <div className="selected-ficha-summary">
-          <span>Ficha seleccionada</span>
-          <strong>{activeGroup.number}</strong>
-        </div>
-        <div className="selected-ficha-summary">
-          <span>Jornada</span>
-          <strong>{activeGroup.shift}</strong>
-        </div>
       </section>
 
       <section className="selected-ficha-card">
