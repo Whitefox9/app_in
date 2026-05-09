@@ -298,6 +298,28 @@ dl {
   font-size: 0.86rem;
 }
 
+.tutorial-toggle {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 16px;
+  color: var(--navy);
+  background: #f8fbfd;
+  border: 1px solid rgba(23, 105, 170, 0.14);
+  font-weight: 850;
+}
+
+.tutorial-toggle input {
+  width: 20px;
+  min-height: 20px;
+  accent-color: var(--blue);
+}
+
+.tutorial-toggle span {
+  line-height: 1.25;
+}
+
 label {
   display: grid;
   gap: 8px;
@@ -403,6 +425,88 @@ select:focus {
   font-size: 0.78rem;
   font-weight: 800;
   text-align: center;
+}
+
+.tutorial-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(11, 31, 58, 0.48);
+  backdrop-filter: blur(10px);
+}
+
+.tutorial-card {
+  width: 100%;
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 26px;
+  background: #fff;
+  border: 1px solid rgba(11, 31, 58, 0.08);
+  box-shadow: 0 22px 50px rgba(11, 31, 58, 0.28);
+  animation: screenFadeUp 260ms ease both;
+}
+
+.tutorial-progress {
+  justify-self: start;
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #0f5f99;
+  background: #eef7ff;
+  border: 1px solid #b8ddf3;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.tutorial-step-mark {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  box-shadow: 0 12px 24px rgba(23, 105, 170, 0.18);
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.tutorial-card h2 {
+  color: var(--navy);
+  font-size: 1.35rem;
+  line-height: 1.12;
+}
+
+.tutorial-card p {
+  color: var(--muted);
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.tutorial-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.tutorial-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #dbe3ee;
+}
+
+.tutorial-dots span.active {
+  width: 22px;
+  background: var(--blue);
+}
+
+.tutorial-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 10px;
 }
 
 .dashboard-hero {

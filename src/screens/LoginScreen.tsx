@@ -1,8 +1,16 @@
+import { useState } from 'react'
+
 interface LoginScreenProps {
-  onLogin: () => void
+  onLogin: (showTutorial: boolean) => void
 }
 
 export function LoginScreen({ onLogin }: LoginScreenProps) {
+  const [showTutorial, setShowTutorial] = useState(true)
+
+  function handleLogin() {
+    onLogin(showTutorial)
+  }
+
   return (
     <div className="login-shell">
       <section className="login-card" aria-labelledby="login-title">
@@ -19,7 +27,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           className="login-form"
           onSubmit={(event) => {
             event.preventDefault()
-            onLogin()
+            handleLogin()
           }}
         >
           <div className="login-form-heading">
@@ -34,12 +42,20 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             Contraseña
             <input type="password" defaultValue="demo2026" autoComplete="current-password" />
           </label>
+          <label className="tutorial-toggle">
+            <input
+              type="checkbox"
+              checked={showTutorial}
+              onChange={(event) => setShowTutorial(event.target.checked)}
+            />
+            <span>Mostrar tutorial al ingresar</span>
+          </label>
           <button type="submit" className="primary">
             Ingresar
           </button>
         </form>
 
-        <button type="button" className="text-button" onClick={onLogin}>
+        <button type="button" className="text-button" onClick={handleLogin}>
           Usar acceso demo
         </button>
         <div className="locked-role">

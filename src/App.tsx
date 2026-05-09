@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AppShell } from './components/AppShell'
+import { GuidedTutorial } from './components/GuidedTutorial'
 import {
   attendanceRecords as initialAttendanceRecords,
   groups,
@@ -35,6 +36,7 @@ function App() {
   useRipple()
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isTutorialOpen, setIsTutorialOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<TabKey>('home')
   const [activeView, setActiveView] = useState<AppView>('home')
   const [selectedGroupId, setSelectedGroupId] = useState(groups[0].id)
@@ -147,8 +149,15 @@ function App() {
     })
   }
 
+  function handleLogin(showTutorial: boolean) {
+    setActiveTab('home')
+    setActiveView('home')
+    setIsLoggedIn(true)
+    setIsTutorialOpen(showTutorial)
+  }
+
   if (!isLoggedIn) {
-    return <LoginScreen onLogin={() => setIsLoggedIn(true)} />
+    return <LoginScreen onLogin={handleLogin} />
   }
 
   return (
@@ -239,6 +248,7 @@ function App() {
       {activeView === 'reports' ? (
         <ReportsScreen records={attendanceRecords} groups={groups} onBack={() => navigateToTab('home')} />
       ) : null}
+      {isTutorialOpen ? <GuidedTutorial onFinish={() => setIsTutorialOpen(false)} /> : null}
     </AppShell>
   )
 }
