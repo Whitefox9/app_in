@@ -1,4 +1,5 @@
 import { AppHeader } from '../components/AppHeader'
+import { ContextualActionBar } from '../components/ContextualActionBar'
 import { MetricCard } from '../components/MetricCard'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
 import type { AttendanceRecord, AttendanceStatus, Learner, TrainingGroup } from '../types'
@@ -41,7 +42,6 @@ export function AttendanceHistoryScreen({
         title="Consulta de asistencia"
         subtitle="Filtra registros por fecha, mes, aprendiz o estado."
         statusBadge={`Ficha ${group.number}`}
-        backButton={{ label: '‹ Volver a ficha', onClick: onBack }}
         infoCards={[
           { label: 'Ficha', value: group.number },
           { label: 'Periodo', value: groupRecords[0]?.date ?? 'Sin registros' },
@@ -97,6 +97,8 @@ export function AttendanceHistoryScreen({
           </span>
         ))}
       </section>
+
+      <ContextualActionBar secondary={{ label: '‹ Volver a ficha', onClick: onBack }} />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AppShell } from './components/AppShell'
 import {
   attendanceRecords as initialAttendanceRecords,
@@ -22,6 +22,15 @@ import type { AttendanceRecord, FichaNovelty, TabKey } from './types'
 
 type AppView = TabKey | 'groupDetail' | 'groupHistory' | 'groupReports' | 'reports'
 
+interface AppHistoryState {
+  facilInstructores: true
+  activeTab: TabKey
+  activeView: AppView
+  selectedGroupId: string
+  attendanceStartGroupId: string | null
+  attendanceFromGroupDetail: boolean
+}
+
 function App() {
   useRipple()
 
@@ -34,12 +43,53 @@ function App() {
   const [attendanceMenuVersion, setAttendanceMenuVersion] = useState(0)
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>(initialAttendanceRecords)
   const [novelties, setNovelties] = useState<FichaNovelty[]>([])
+  const restoringHistory = useRef(false)
 
   const selectedGroup = groups.find((group) => group.id === selectedGroupId) ?? groups[0]
   const selectedGroupLearners = useMemo(
     () => learners.filter((learner) => selectedGroup.learnerIds.includes(learner.id)),
     [selectedGroup],
   )
+
+  useEffect(() => {
+    function handlePopState(event: PopStateEvent) {
+      const state = event.state as AppHistoryState | null
+      if (!state?.facilInstructores) return
+
+      restoringHistory.current = true
+      setActiveTab(state.activeTab)
+      setActiveView(state.activeView)
+      setSelectedGroupId(state.selectedGroupId)
+      setAttendanceStartGroupId(state.attendanceStartGroupId)
+      setAttendanceFromGroupDetail(state.attendanceFromGroupDetail)
+      if (state.activeView === 'attendance') {
+        setAttendanceMenuVersion((current) => current + 1)
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  useEffect(() => {
+    if (!isLoggedIn) return
+
+    const state: AppHistoryState = {
+      facilInstructores: true,
+      activeTab,
+      activeView,
+      selectedGroupId,
+      attendanceStartGroupId,
+      attendanceFromGroupDetail,
+    }
+
+    if (restoringHistory.current) {
+      restoringHistory.current = false
+      return
+    }
+
+    window.history.pushState(state, '')
+  }, [isLoggedIn, activeTab, activeView, selectedGroupId, attendanceStartGroupId, attendanceFromGroupDetail])
 
   function navigateToTab(tab: TabKey) {
     setActiveTab(tab)

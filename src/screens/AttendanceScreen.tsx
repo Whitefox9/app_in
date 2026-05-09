@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AppHeader } from '../components/AppHeader'
+import { ContextualActionBar } from '../components/ContextualActionBar'
 import { LearnerRow } from '../components/LearnerRow'
 import { MetricCard } from '../components/MetricCard'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
@@ -179,11 +180,6 @@ export function AttendanceScreen({
         title="Registrar asistencia"
         subtitle="Marca el estado de cada aprendiz para la fecha seleccionada."
         statusBadge={`Ficha ${activeGroup.number}`}
-        backButton={
-          openedFromGroupDetail
-            ? { label: '‹ Volver a ficha', onClick: () => onBackToGroup?.(activeGroup.id) }
-            : { label: 'Cambiar ficha', onClick: () => setSelectedCallGroupId(null) }
-        }
         infoCards={[
           { label: 'Ficha', value: activeGroup.number },
           { label: 'Fecha', value: date },
@@ -255,14 +251,18 @@ export function AttendanceScreen({
       </section>
 
       {savedMessage ? <div className="success-message">{savedMessage}</div> : null}
-      <button
-        type="button"
-        className="primary sticky-action"
-        onClick={handleSave}
-        disabled={groupLearners.length === 0}
-      >
-        Guardar asistencia
-      </button>
+      <ContextualActionBar
+        secondary={
+          openedFromGroupDetail
+            ? { label: '‹ Volver a ficha', onClick: () => onBackToGroup?.(activeGroup.id) }
+            : { label: '‹ Cambiar ficha', onClick: () => setSelectedCallGroupId(null) }
+        }
+        primary={{
+          label: 'Guardar asistencia',
+          onClick: handleSave,
+          disabled: groupLearners.length === 0,
+        }}
+      />
     </div>
   )
 }

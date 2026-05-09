@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AppHeader } from '../components/AppHeader'
+import { ContextualActionBar } from '../components/ContextualActionBar'
 import { FichaManagementActions } from '../components/FichaManagementActions'
 import { FichaNoveltyForm } from '../components/FichaNoveltyForm'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
@@ -83,7 +84,6 @@ export function GroupDetailScreen({
         title={group.program}
         subtitle={`${group.shift} · ${group.location}`}
         statusBadge={group.status}
-        backButton={{ onClick: onBack }}
         infoCards={[
           { label: 'Horario', value: group.schedule },
           { label: 'Instructor', value: instructor.name },
@@ -182,6 +182,11 @@ export function GroupDetailScreen({
           })}
         </div>
       </section>
+
+      <ContextualActionBar
+        secondary={{ label: '‹ Fichas', onClick: onBack }}
+        primary={{ label: 'Registrar asistencia', onClick: () => onAttendance(group.id) }}
+      />
     </div>
   )
 }

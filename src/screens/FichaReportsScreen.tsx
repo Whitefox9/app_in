@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AppHeader } from '../components/AppHeader'
 import { AttendanceStatusBadge } from '../components/AttendanceStatusBadge'
+import { ContextualActionBar } from '../components/ContextualActionBar'
 import { MetricCard } from '../components/MetricCard'
 import type {
   AttendanceRecord,
@@ -356,7 +357,6 @@ export function FichaReportsScreen({
         title="Reportes de asistencia"
         subtitle="Consulta y genera consolidados de asistencia."
         statusBadge={`Ficha ${group.number}`}
-        backButton={{ label: '‹ Volver a ficha', onClick: onBack }}
         infoCards={[
           { label: 'Ficha', value: group.number },
           { label: 'Periodo', value: periodMode === 'month' ? monthLabel(selectedMonth) : 'Inicio' },
@@ -639,6 +639,24 @@ export function FichaReportsScreen({
           </button>
         </section>
       ) : null}
+
+      <ContextualActionBar
+        secondary={{ label: '‹ Volver', onClick: onBack }}
+        primary={{
+          label:
+            mode === 'day'
+              ? 'Copiar reporte'
+              : mode === 'accumulated'
+                ? 'Copiar consolidado'
+                : 'Copiar individual',
+          onClick:
+            mode === 'day'
+              ? handleCopyDayReport
+              : mode === 'accumulated'
+                ? handleCopyConsolidatedReport
+                : handleCopyIndividualReport,
+        }}
+      />
     </div>
   )
 }

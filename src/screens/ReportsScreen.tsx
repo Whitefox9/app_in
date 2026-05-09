@@ -1,5 +1,6 @@
 import { AppHeader } from '../components/AppHeader'
 import { useMemo, useState } from 'react'
+import { ContextualActionBar } from '../components/ContextualActionBar'
 import { MetricCard } from '../components/MetricCard'
 import type { AttendanceRecord, TrainingGroup } from '../types'
 import { summarizeAttendance } from '../utils/attendance'
@@ -33,7 +34,6 @@ export function ReportsScreen({ groups, records, onBack }: ReportsScreenProps) {
         eyebrow="REPORTES"
         title="Reportes de asistencia"
         subtitle="Consulta y genera consolidados de asistencia."
-        backButton={{ onClick: onBack }}
         infoCards={[
           { label: 'Fichas', value: groups.length },
           { label: 'Periodo', value: records.at(0)?.date ?? 'Demo' },
@@ -100,6 +100,14 @@ export function ReportsScreen({ groups, records, onBack }: ReportsScreenProps) {
       >
         Exportar Excel
       </button>
+
+      <ContextualActionBar
+        secondary={{ label: '‹ Volver', onClick: onBack }}
+        primary={{
+          label: 'Exportar Excel',
+          onClick: () => setMessage('Reporte generado para demostración.'),
+        }}
+      />
     </div>
   )
 }

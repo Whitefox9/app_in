@@ -6,12 +6,14 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   return (
     <div className="login-shell">
       <section className="login-card" aria-labelledby="login-title">
-        <div className="brand-mark">
-          <span>App-In</span>
+        <div className="login-hero">
+          <div className="brand-mark">
+            <span>App-In</span>
+          </div>
+          <span className="app-kicker">DEMO INSTITUCIONAL</span>
+          <h1 id="login-title">Fácil Instructores</h1>
+          <p>Gestión móvil de fichas, asistencia, agenda y seguimiento operativo.</p>
         </div>
-        <span className="app-kicker">DEMO INSTITUCIONAL</span>
-        <h1 id="login-title">Fácil Instructores</h1>
-        <p>Gestión móvil de fichas, asistencia, agenda y seguimiento operativo.</p>
 
         <form
           className="login-form"
@@ -20,6 +22,10 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             onLogin()
           }}
         >
+          <div className="login-form-heading">
+            <h2>Acceso institucional</h2>
+            <p>Ingresa con tu usuario o usa el acceso demo.</p>
+          </div>
           <label>
             Usuario
             <input type="text" defaultValue="instructor.demo" autoComplete="username" />
@@ -34,12 +40,16 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
         </form>
 
         <button type="button" className="text-button" onClick={onLogin}>
-          Entrar con acceso demo
+          Usar acceso demo
         </button>
         <div className="locked-role">
-          <strong>Coordinador</strong>
-          <span>Vista futura bloqueada para esta demo</span>
+          <span aria-hidden="true">▣</span>
+          <div>
+            <strong>Coordinador</strong>
+            <small>Disponible en próxima versión</small>
+          </div>
         </div>
+        <p className="login-version">Versión demo · Fácil Instructores</p>
       </section>
     </div>
   )

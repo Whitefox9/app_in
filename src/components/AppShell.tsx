@@ -13,6 +13,7 @@ export function AppShell({ activeTab, children, onTabChange }: AppShellProps) {
     <div className="app-shell">
       <div className="phone-frame">
         <main className="screen-content">{children}</main>
+        <div id="contextual-action-root" />
         <BottomNav activeTab={activeTab} onTabChange={onTabChange} />
       </div>
     </div>

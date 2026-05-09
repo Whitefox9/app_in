@@ -1,4 +1,5 @@
 import { AppHeader } from '../components/AppHeader'
+import { ContextualActionBar } from '../components/ContextualActionBar'
 import { RecentAttendanceList } from '../components/RecentAttendanceList'
 import type { AttendanceRecord, Learner, TrainingGroup } from '../types'
 
@@ -21,7 +22,6 @@ export function ApprenticeDetailScreen({
         eyebrow="APRENDIZ"
         title={learner.name}
         subtitle={`${learner.documentType} ${learner.documentNumber} · Ficha ${group.number}`}
-        backButton={{ label: '‹ Volver a ficha', onClick: onBack }}
         infoCards={[
           { label: 'Programa', value: group.program },
           { label: 'Teléfono', value: learner.phone },
@@ -72,6 +72,8 @@ export function ApprenticeDetailScreen({
         </div>
         <RecentAttendanceList learner={learner} group={group} records={records} />
       </section>
+
+      <ContextualActionBar secondary={{ label: '‹ Volver a ficha', onClick: onBack }} />
     </div>
   )
 }
