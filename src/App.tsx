@@ -161,10 +161,19 @@ function App() {
           pendingAttendance={1}
           onNavigate={navigateToTab}
           onReports={() => setActiveView('reports')}
+          onOpenGroup={openGroup}
+          onTakeAttendance={openAttendance}
         />
       ) : null}
 
-      {activeView === 'fichas' ? <GroupsScreen groups={groups} onOpenGroup={openGroup} /> : null}
+      {activeView === 'fichas' ? (
+        <GroupsScreen
+          groups={groups}
+          sessions={sessions}
+          records={attendanceRecords}
+          onOpenGroup={openGroup}
+        />
+      ) : null}
 
       {activeView === 'groupDetail' ? (
         <GroupDetailScreen
@@ -212,6 +221,8 @@ function App() {
           openedFromGroupDetail={attendanceFromGroupDetail}
           onSave={saveAttendance}
           onBackToGroup={backToSelectedGroup}
+          onOpenHistory={openGroupHistory}
+          onOpenReports={openGroupReports}
         />
       ) : null}
 

@@ -78,19 +78,27 @@ button:focus-visible {
 
 .primary .button-ripple,
 .app-header-back .button-ripple,
-.management-actions button:first-child .button-ripple {
+.management-actions button:first-child .button-ripple,
+.attendance-quick-action.primary-action .button-ripple,
+.report-mode-card.active .button-ripple {
   background: rgba(255, 255, 255, 0.34);
 }
 
 .primary.ghost .button-ripple,
-.group-action .button-ripple,
 .secondary-action .button-ripple,
 .back-button .button-ripple,
 .text-button .button-ripple,
 .quick-actions button .button-ripple,
 .report-mode-card .button-ripple,
-.management-actions button .button-ripple {
+.management-actions button .button-ripple,
+.attendance-quick-action .button-ripple,
+.attendance-options-link .button-ripple,
+.dashboard-task-card button .button-ripple {
   background: rgba(23, 105, 170, 0.2);
+}
+
+.group-action.primary .button-ripple {
+  background: rgba(255, 255, 255, 0.34);
 }
 
 @keyframes buttonRipple {
@@ -676,6 +684,55 @@ select:focus {
   background: var(--blue);
 }
 
+.dashboard-task-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.dashboard-task-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(23, 105, 170, 0.14);
+  box-shadow: 0 10px 20px rgba(11, 31, 58, 0.05);
+}
+
+.dashboard-task-card div {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.dashboard-task-card strong {
+  color: var(--navy);
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.dashboard-task-card span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.dashboard-task-card button {
+  min-height: 40px;
+  border: 1px solid rgba(23, 105, 170, 0.28);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: #0f5f99;
+  background: #eef7ff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
 .notice-card p {
   color: var(--muted);
   margin-top: 6px;
@@ -870,6 +927,67 @@ select:focus {
   font-weight: 850;
 }
 
+.group-operational-status {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: #f8fbfd;
+  border: 1px solid rgba(11, 31, 58, 0.07);
+}
+
+.group-operational-status > span,
+.group-operational-status small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.group-operational-status > span {
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.group-operational-status strong {
+  justify-self: end;
+  border-radius: 999px;
+  padding: 6px 9px;
+  font-size: 0.72rem;
+  line-height: 1;
+  text-align: right;
+}
+
+.group-operational-status small {
+  grid-column: 1 / -1;
+}
+
+.group-operational-status.pending {
+  background: #fff8e8;
+  border-color: rgba(187, 123, 18, 0.24);
+}
+
+.group-operational-status.pending strong {
+  color: #7a4d09;
+  background: #ffe6ad;
+}
+
+.group-operational-status.registered {
+  background: #edf9f3;
+  border-color: rgba(20, 134, 93, 0.22);
+}
+
+.group-operational-status.registered strong {
+  color: #0f6f4a;
+  background: #d7f3e5;
+}
+
+.group-operational-status.neutral strong {
+  color: #4b5b70;
+  background: #eef2f6;
+}
+
 .group-metric-row {
   display: grid;
   grid-template-columns: 0.8fr 0.9fr 1.3fr;
@@ -906,17 +1024,18 @@ select:focus {
 
 .group-action {
   margin: 0 18px 18px;
-  color: #0f5f99;
-  background: #eef7ff;
-  border: 1px solid #b8ddf3;
-  box-shadow: 0 8px 18px rgba(23, 105, 170, 0.1);
-  font-weight: 850;
+  color: #fff;
+  background: linear-gradient(135deg, #1687c8, #0f6fab);
+  border: 1px solid rgba(15, 111, 171, 0.28);
+  box-shadow: 0 13px 24px rgba(15, 111, 171, 0.24);
+  font-weight: 900;
 }
 
 .group-action:hover,
 .group-action:focus-visible {
-  background: #e4f2fb;
-  border-color: rgba(23, 105, 170, 0.38);
+  background: linear-gradient(135deg, #1b93d6, #1179ba);
+  border-color: rgba(15, 111, 171, 0.42);
+  box-shadow: 0 16px 28px rgba(15, 111, 171, 0.3);
   outline: none;
 }
 
@@ -957,6 +1076,87 @@ select:focus {
 .attendance-selector-list {
   display: grid;
   gap: 12px;
+}
+
+.attendance-quick-panel {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid rgba(11, 31, 58, 0.08);
+}
+
+.attendance-quick-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.attendance-quick-action {
+  min-height: 98px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(23, 105, 170, 0.16);
+  background: #fff;
+  color: var(--navy);
+  text-align: left;
+  box-shadow: 0 10px 20px rgba(11, 31, 58, 0.06);
+}
+
+.attendance-quick-action.primary-action {
+  color: #fff;
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  border-color: rgba(23, 105, 170, 0.28);
+  box-shadow: 0 14px 26px rgba(23, 105, 170, 0.18);
+}
+
+.attendance-quick-action > span {
+  grid-row: span 2;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--blue);
+  font-weight: 900;
+}
+
+.attendance-quick-action.primary-action > span {
+  color: var(--blue);
+  background: #fff;
+}
+
+.attendance-quick-action strong {
+  font-size: 0.96rem;
+  line-height: 1.2;
+}
+
+.attendance-quick-action small {
+  color: #516176;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.attendance-quick-action.primary-action small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.attendance-options-link {
+  justify-self: start;
+  min-height: 34px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 11px;
+  color: #0f5f99;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.8rem;
+  font-weight: 900;
 }
 
 .attendance-ficha-card {
@@ -1146,16 +1346,17 @@ dd {
 
 .management-actions button {
   min-height: 116px;
-  border: 1px solid rgba(11, 31, 58, 0.08);
+  border: 1px solid rgba(23, 105, 170, 0.16);
   border-radius: 20px;
   padding: 14px;
-  background: #f8fbfd;
+  background: #fff;
   color: var(--navy);
   display: grid;
   align-content: start;
   justify-items: start;
   gap: 8px;
   text-align: left;
+  box-shadow: 0 10px 20px rgba(11, 31, 58, 0.06);
 }
 
 .management-actions button:first-child {
@@ -1180,13 +1381,27 @@ dd {
   background: #fff;
 }
 
+.management-actions .management-action-reports {
+  border-color: rgba(23, 105, 170, 0.26);
+  background: #eef7ff;
+  box-shadow: 0 10px 20px rgba(23, 105, 170, 0.1);
+}
+
+.management-actions .management-action-reports span {
+  background: #0f6fab;
+}
+
+.management-actions .management-action-reports strong {
+  color: #0f5f99;
+}
+
 .management-actions button strong {
   font-size: 0.95rem;
   line-height: 1.2;
 }
 
 .management-actions button small {
-  color: var(--muted);
+  color: #516176;
   font-weight: 800;
   line-height: 1.25;
 }
@@ -1263,6 +1478,23 @@ dd {
   font-weight: 800;
 }
 
+.section-guide,
+.field-guide {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.section-guide {
+  margin-top: 6px;
+}
+
+.field-guide {
+  display: block;
+  margin-top: 3px;
+}
+
 .learner-summary,
 .learner-row,
 .history-row,
@@ -1286,9 +1518,11 @@ dd {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 12px;
-  border: 1px solid rgba(11, 31, 58, 0.08);
+  border: 1px solid rgba(23, 105, 170, 0.12);
   text-align: left;
   cursor: pointer;
+  background: linear-gradient(180deg, #fff, #f8fbfd);
+  box-shadow: 0 8px 18px rgba(11, 31, 58, 0.04);
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease,
@@ -1309,15 +1543,41 @@ dd {
   gap: 6px;
 }
 
-.learner-action small {
-  color: var(--blue);
+.learner-action > span > strong {
+  color: var(--navy);
+  font-size: 0.96rem;
+  font-weight: 900;
+  line-height: 1.22;
+}
+
+.learner-action > span > small {
+  color: #637086;
   font-size: 0.78rem;
-  font-weight: 850;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.learner-action small {
+  color: #0f5f99;
+  font-size: 0.78rem;
+  font-weight: 900;
   white-space: nowrap;
 }
 
 .learner-action > span small {
-  color: var(--muted);
+  color: #637086;
+  font-weight: 750;
+}
+
+.learner-action > small {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #eef7ff;
+  border: 1px solid #b8ddf3;
+  box-shadow: 0 6px 12px rgba(23, 105, 170, 0.08);
 }
 
 .learner-attendance-preview {
@@ -1369,6 +1629,45 @@ dd {
   border-radius: 22px;
   background: #fff;
   border: 1px solid rgba(11, 31, 58, 0.08);
+}
+
+.date-picker-control {
+  position: relative;
+  display: block;
+}
+
+.date-picker-control input {
+  padding-right: 88px;
+  color: var(--navy);
+  background: #eef7ff;
+  border-color: #b8ddf3;
+  font-weight: 850;
+  box-shadow: 0 8px 18px rgba(23, 105, 170, 0.08);
+  cursor: pointer;
+}
+
+.date-picker-control input:hover,
+.date-picker-control input:focus {
+  border-color: rgba(23, 105, 170, 0.55);
+  box-shadow: 0 0 0 4px rgba(21, 163, 199, 0.14);
+}
+
+.date-picker-control > span {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 9px;
+  border-radius: 999px;
+  color: #0f5f99;
+  background: #fff;
+  border: 1px solid rgba(23, 105, 170, 0.2);
+  font-size: 0.72rem;
+  font-weight: 900;
+  pointer-events: none;
 }
 
 .selected-ficha-summary {
@@ -1729,6 +2028,29 @@ dd {
   gap: 12px;
 }
 
+.report-mode-panel {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid rgba(11, 31, 58, 0.08);
+}
+
+.report-mode-panel h2 {
+  color: var(--navy);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.report-mode-panel p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
 .report-mode-grid {
   display: grid;
   gap: 10px;
@@ -1736,7 +2058,7 @@ dd {
 
 .report-mode-card {
   min-height: 76px;
-  border: 1px solid rgba(11, 31, 58, 0.08);
+  border: 1px solid rgba(23, 105, 170, 0.16);
   border-radius: 18px;
   padding: 14px;
   background: #fff;
@@ -1749,9 +2071,10 @@ dd {
 }
 
 .report-mode-card.active {
-  border-color: rgba(21, 163, 199, 0.72);
-  background: #eef7fb;
-  box-shadow: 0 12px 24px rgba(21, 163, 199, 0.12);
+  color: #fff;
+  border-color: rgba(23, 105, 170, 0.28);
+  background: linear-gradient(135deg, var(--navy), var(--blue));
+  box-shadow: 0 14px 26px rgba(23, 105, 170, 0.18);
 }
 
 .report-mode-card strong {
@@ -1765,6 +2088,15 @@ dd {
   color: var(--muted);
   font-size: 0.8rem;
   font-weight: 800;
+}
+
+.report-mode-card.active span,
+.report-mode-card.active strong {
+  color: #fff;
+}
+
+.report-mode-card.active span {
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .report-info-card,
@@ -1800,7 +2132,7 @@ dd {
 
 .report-actions {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: 1fr;
   gap: 10px;
 }
 
@@ -1985,7 +2317,9 @@ dd {
 .learner-action,
 .report-mode-card,
 .quick-actions button,
-.management-actions button {
+.management-actions button,
+.attendance-quick-action,
+.dashboard-task-card button {
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
@@ -2013,6 +2347,10 @@ dd {
 .quick-actions button:focus-visible,
 .management-actions button:hover,
 .management-actions button:focus-visible,
+.attendance-quick-action:hover,
+.attendance-quick-action:focus-visible,
+.dashboard-task-card button:hover,
+.dashboard-task-card button:focus-visible,
 .report-mode-card:hover,
 .report-mode-card:focus-visible {
   box-shadow: 0 12px 24px rgba(11, 31, 58, 0.1);
@@ -2095,6 +2433,14 @@ dd {
   .learner-report-summary,
   .report-facts-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-task-card {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-task-card button {
+    justify-self: start;
   }
 
   .timeline-item {

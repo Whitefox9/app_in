@@ -2,10 +2,15 @@ import type { TrainingGroup } from '../types'
 
 interface GroupCardProps {
   group: TrainingGroup
+  operationalStatus: {
+    label: string
+    detail: string
+    tone: 'pending' | 'registered' | 'neutral'
+  }
   onOpen: (groupId: string) => void
 }
 
-export function GroupCard({ group, onOpen }: GroupCardProps) {
+export function GroupCard({ group, operationalStatus, onOpen }: GroupCardProps) {
   return (
     <article className="group-card">
       <div className="group-card-header">
@@ -27,6 +32,11 @@ export function GroupCard({ group, onOpen }: GroupCardProps) {
           <span>{group.shift}</span>
           <span>{group.locationType}</span>
         </div>
+        <div className={`group-operational-status ${operationalStatus.tone}`}>
+          <span>Asistencia de hoy</span>
+          <strong>{operationalStatus.label}</strong>
+          <small>{operationalStatus.detail}</small>
+        </div>
         <div className="group-metric-row">
           <article>
             <strong>{group.learnerIds.length}</strong>
@@ -43,7 +53,7 @@ export function GroupCard({ group, onOpen }: GroupCardProps) {
         </div>
       </div>
       <button type="button" className="primary group-action" onClick={() => onOpen(group.id)}>
-        Gestionar ficha
+        Entrar a la ficha →
       </button>
     </article>
   )

@@ -36,7 +36,7 @@ interface FichaReportsScreenProps {
 }
 
 const reportModes: Array<{ key: ReportMode; title: string; description: string }> = [
-  { key: 'day', title: 'Reporte del dia', description: 'Resumen por fecha' },
+  { key: 'day', title: 'Reporte del día', description: 'Resumen por fecha' },
   { key: 'accumulated', title: 'Desde inicio de formación', description: 'Seguimiento acumulado' },
   { key: 'learner', title: 'Por aprendiz', description: 'Historial individual' },
 ]
@@ -303,6 +303,14 @@ export function FichaReportsScreen({
   const selectedLearnerReport = learnerReports.find((item) => item.learner.id === selectedLearnerId) ?? learnerReports[0]
   const totalExpected = learners.length * periodSessionDates.length
   const alertCount = periodLearnerReports.filter((item) => item.state === 'Alerta' || item.state === 'Crítico').length
+  const headerPeriod =
+    mode === 'day'
+      ? shortDate(selectedDate)
+      : mode === 'learner'
+        ? 'Individual'
+        : periodMode === 'month'
+          ? monthLabel(selectedMonth)
+          : 'Acumulado'
 
   async function handleCopyDayReport() {
     await copyText(
@@ -315,7 +323,7 @@ export function FichaReportsScreen({
         entries: dayEntries,
       }),
     )
-    setMessage('Reporte del dia copiado al portapapeles.')
+    setMessage('Reporte del día copiado al portapapeles.')
   }
 
   async function handleCopyIndividualReport() {
@@ -359,33 +367,39 @@ export function FichaReportsScreen({
         statusBadge={`Ficha ${group.number}`}
         infoCards={[
           { label: 'Ficha', value: group.number },
-          { label: 'Periodo', value: periodMode === 'month' ? monthLabel(selectedMonth) : 'Inicio' },
+          { label: 'Periodo', value: headerPeriod },
           { label: 'Aprendices', value: learners.length },
         ]}
       />
 
-      <section className="report-mode-grid" aria-label="Tipos de reporte">
-        {reportModes.map((item) => (
-          <button
-            key={item.key}
-            type="button"
-            className={mode === item.key ? 'report-mode-card active' : 'report-mode-card'}
-            onClick={() => {
-              setMode(item.key)
-              setMessage('')
-            }}
-          >
-            <strong>{item.title}</strong>
-            <span>{item.description}</span>
-          </button>
-        ))}
+      <section className="report-mode-panel" aria-label="Tipos de reporte">
+        <div>
+          <h2>Selecciona el tipo de reporte</h2>
+          <p>Elige si deseas consultar un reporte diario, acumulado o individual.</p>
+        </div>
+        <div className="report-mode-grid">
+          {reportModes.map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              className={mode === item.key ? 'report-mode-card active' : 'report-mode-card'}
+              onClick={() => {
+                setMode(item.key)
+                setMessage('')
+              }}
+            >
+              <strong>{item.title}</strong>
+              <span>{item.description}</span>
+            </button>
+          ))}
+        </div>
       </section>
 
       {mode === 'day' ? (
         <section className="report-panel">
           <div className="list-header">
-            <h2>Reporte del dia</h2>
-            <span>{dayRecord ? 'Registrado' : 'Sin llamado'}</span>
+            <h2>Resumen diario</h2>
+            <span>{dayRecord ? 'Datos disponibles' : 'Sin llamado'}</span>
           </div>
           <label>
             Fecha seleccionada
@@ -434,9 +448,6 @@ export function FichaReportsScreen({
 
           {message ? <div className="success-message">{message}</div> : null}
           <div className="report-actions">
-            <button type="button" className="secondary-action" onClick={handleCopyDayReport}>
-              Copiar reporte
-            </button>
             <button
               type="button"
               className="primary"
@@ -557,9 +568,6 @@ export function FichaReportsScreen({
 
           {message ? <div className="success-message">{message}</div> : null}
           <div className="report-actions">
-            <button type="button" className="secondary-action" onClick={handleCopyConsolidatedReport}>
-              Copiar consolidado
-            </button>
             <button
               type="button"
               className="primary"
@@ -634,9 +642,6 @@ export function FichaReportsScreen({
           </div>
 
           {message ? <div className="success-message">{message}</div> : null}
-          <button type="button" className="primary" onClick={handleCopyIndividualReport}>
-            Copiar reporte individual
-          </button>
         </section>
       ) : null}
 

@@ -17,6 +17,8 @@ import {
   summarizeAttendance,
 } from '../utils/attendance'
 
+type AttendanceQuickAction = 'home' | 'take' | 'history' | 'reports'
+
 interface AttendanceScreenProps {
   groups: TrainingGroup[]
   learners: Learner[]
@@ -26,6 +28,8 @@ interface AttendanceScreenProps {
   openedFromGroupDetail?: boolean
   onSave: (record: AttendanceRecord) => void
   onBackToGroup?: (groupId: string) => void
+  onOpenHistory?: (groupId: string) => void
+  onOpenReports?: (groupId: string) => void
 }
 
 export function AttendanceScreen({
@@ -37,8 +41,11 @@ export function AttendanceScreen({
   openedFromGroupDetail = false,
   onSave,
   onBackToGroup,
+  onOpenHistory,
+  onOpenReports,
 }: AttendanceScreenProps) {
   const today = new Date().toISOString().slice(0, 10)
+  const [quickAction, setQuickAction] = useState<AttendanceQuickAction>(selectedGroupId ? 'take' : 'home')
   const [date, setDate] = useState(today)
   const [selectedCallGroupId, setSelectedCallGroupId] = useState<string | null>(selectedGroupId ?? null)
   const [candidateGroupId, setCandidateGroupId] = useState(groups[0]?.id ?? '')
@@ -104,13 +111,82 @@ export function AttendanceScreen({
     return 'Pendiente'
   }
 
-  if (!selectedCallGroupId) {
+  function handleQuickGroupAction(groupId: string) {
+    if (quickAction === 'history') {
+      onOpenHistory?.(groupId)
+      return
+    }
+
+    if (quickAction === 'reports') {
+      onOpenReports?.(groupId)
+      return
+    }
+
+    startAttendance(groupId)
+  }
+
+  if (!selectedCallGroupId && quickAction === 'home') {
     return (
       <div className="screen-stack">
         <AppHeader
           eyebrow="CONTROL DIARIO"
           title="Asistencia"
-          subtitle="Registra, consulta y genera reportes de asistencia."
+          subtitle="Acceso rápido para registrar, consultar y reportar llamados de asistencia."
+          infoCards={[
+            { label: 'Pendientes', value: Math.max(groups.length - registeredTodayCount, 0) },
+            { label: 'Registradas', value: registeredTodayCount },
+            { label: 'Fichas del día', value: todaySessionsCount || groups.length },
+          ]}
+        />
+
+        <section className="attendance-quick-panel">
+          <div className="list-header">
+            <h2>¿Qué deseas hacer?</h2>
+            <span>Operación diaria</span>
+          </div>
+          <div className="attendance-quick-actions">
+            <button type="button" className="attendance-quick-action primary-action" onClick={() => setQuickAction('take')}>
+              <span aria-hidden="true">A</span>
+              <strong>Tomar asistencia</strong>
+              <small>Selecciona una ficha y registra el llamado del día.</small>
+            </button>
+            <button type="button" className="attendance-quick-action" onClick={() => setQuickAction('history')}>
+              <span aria-hidden="true">H</span>
+              <strong>Consultar asistencia</strong>
+              <small>Busca llamados anteriores por fecha, mes o aprendiz.</small>
+            </button>
+            <button type="button" className="attendance-quick-action" onClick={() => setQuickAction('reports')}>
+              <span aria-hidden="true">R</span>
+              <strong>Generar reporte</strong>
+              <small>Crea consolidados de asistencia para coordinación.</small>
+            </button>
+          </div>
+        </section>
+      </div>
+    )
+  }
+
+  if (!selectedCallGroupId) {
+    const selectorTitle = quickAction === 'take' ? 'Selecciona una ficha para el llamado' : 'Selecciona una ficha'
+    const selectorDescription =
+      quickAction === 'history'
+        ? 'Elige la ficha que deseas consultar.'
+        : quickAction === 'reports'
+          ? 'Elige la ficha para generar el reporte.'
+          : 'Selecciona una para iniciar el llamado.'
+    const actionLabel =
+      quickAction === 'history'
+        ? 'Consultar historial'
+        : quickAction === 'reports'
+          ? 'Generar reporte'
+          : 'Tomar asistencia'
+
+    return (
+      <div className="screen-stack">
+        <AppHeader
+          eyebrow="CONTROL DIARIO"
+          title="Asistencia"
+          subtitle="Acceso rápido para registrar, consultar y reportar llamados de asistencia."
           infoCards={[
             { label: 'Pendientes', value: Math.max(groups.length - registeredTodayCount, 0) },
             { label: 'Registradas', value: registeredTodayCount },
@@ -119,8 +195,11 @@ export function AttendanceScreen({
         />
 
         <section className="attendance-summary-card">
-          <strong>Hoy tienes {todaySessionsCount || groups.length} fichas programadas</strong>
-          <span>Selecciona una para iniciar el llamado</span>
+          <strong>{selectorTitle}</strong>
+          <span>{selectorDescription}</span>
+          <button type="button" className="attendance-options-link" onClick={() => setQuickAction('home')}>
+            ‹ Opciones de asistencia
+          </button>
         </section>
 
         <section className="attendance-selector-list">
@@ -160,10 +239,10 @@ export function AttendanceScreen({
                   className="primary"
                   onClick={(event) => {
                     event.stopPropagation()
-                    startAttendance(group.id)
+                    handleQuickGroupAction(group.id)
                   }}
                 >
-                  Tomar asistencia
+                  {actionLabel}
                 </button>
               </article>
             )
@@ -177,7 +256,7 @@ export function AttendanceScreen({
     <div className="screen-stack">
       <AppHeader
         eyebrow="LLAMADO DE ASISTENCIA"
-        title="Registrar asistencia"
+        title="Tomar asistencia"
         subtitle="Marca el estado de cada aprendiz para la fecha seleccionada."
         statusBadge={`Ficha ${activeGroup.number}`}
         infoCards={[
@@ -189,8 +268,12 @@ export function AttendanceScreen({
 
       <section className="attendance-toolbar">
         <label>
-          Fecha
-          <input type="date" value={date} onChange={(event) => handleDateChange(event.target.value)} />
+          Fecha del llamado
+          <small className="field-guide">Toca para cambiar el día del llamado.</small>
+          <span className="date-picker-control">
+            <input type="date" value={date} onChange={(event) => handleDateChange(event.target.value)} />
+            <span aria-hidden="true">Cambiar</span>
+          </span>
         </label>
         <div className="selected-ficha-summary">
           <span>Ficha seleccionada</span>

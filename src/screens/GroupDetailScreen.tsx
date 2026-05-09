@@ -135,6 +135,7 @@ export function GroupDetailScreen({
           <h2>Aprendices</h2>
           <span>{filteredLearners.length} de {learners.length}</span>
         </div>
+        <p className="section-guide">Toca un aprendiz para ver su información e historial.</p>
         <div className="compact-attendance-legend" aria-label="Convenciones de asistencia">
           {(['A', 'CE', 'SE', 'T'] as const).map((status) => (
             <span key={status}>
@@ -176,7 +177,7 @@ export function GroupDetailScreen({
                     )}
                   </span>
                 </span>
-                <small>Ver detalle ›</small>
+                <small>Perfil e historial →</small>
               </button>
             )
           })}
@@ -185,7 +186,7 @@ export function GroupDetailScreen({
 
       <ContextualActionBar
         secondary={{ label: '‹ Fichas', onClick: onBack }}
-        primary={{ label: 'Registrar asistencia', onClick: () => onAttendance(group.id) }}
+        primary={{ label: 'Tomar asistencia', onClick: () => onAttendance(group.id) }}
       />
     </div>
   )

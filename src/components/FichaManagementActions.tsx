@@ -8,26 +8,26 @@ interface FichaManagementActionsProps {
 const actions = [
   {
     key: 'register',
-    title: 'Registrar asistencia',
-    description: 'Abrir llamado de esta ficha',
+    title: 'Tomar asistencia',
+    description: 'Registra el llamado de hoy o de otra fecha.',
     icon: 'A',
   },
   {
     key: 'history',
-    title: 'Consultar asistencia',
-    description: 'Historial filtrado',
+    title: 'Consultar historial',
+    description: 'Revisa asistencias anteriores de esta ficha.',
     icon: 'H',
   },
   {
     key: 'reports',
-    title: 'Ver reportes',
-    description: 'Indicadores operativos',
+    title: 'Generar reporte',
+    description: 'Crea consolidados para coordinación.',
     icon: 'R',
   },
   {
     key: 'novelty',
     title: 'Registrar novedad',
-    description: 'Guardar observación',
+    description: 'Guarda una observación relevante.',
     icon: 'N',
   },
 ] as const
@@ -48,12 +48,18 @@ export function FichaManagementActions({
   return (
     <section className="management-panel">
       <div className="list-header">
-        <h2>Gestiones de la ficha</h2>
+        <h2>¿Qué deseas hacer?</h2>
         <span>Centro operativo</span>
       </div>
+      <p className="section-guide">Selecciona una operación para esta ficha.</p>
       <div className="management-actions">
         {actions.map((action) => (
-          <button key={action.key} type="button" onClick={handlers[action.key]}>
+          <button
+            key={action.key}
+            type="button"
+            className={`management-action-${action.key}`}
+            onClick={handlers[action.key]}
+          >
             <span aria-hidden="true">{action.icon}</span>
             <strong>{action.title}</strong>
             <small>{action.description}</small>
