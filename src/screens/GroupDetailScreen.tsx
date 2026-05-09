@@ -154,7 +154,7 @@ export function GroupDetailScreen({
           />
         </label>
         <div className="learners-list simple">
-          {filteredLearners.map((learner) => {
+          {filteredLearners.map((learner, index) => {
             const recentStatuses = getRecentLearnerStatuses(learner.id)
 
             return (
@@ -163,6 +163,8 @@ export function GroupDetailScreen({
                 type="button"
                 className="learner-summary learner-action"
                 onClick={() => setSelectedLearnerId(learner.id)}
+                data-tutorial={index === 0 ? 'learner-profile-card' : undefined}
+                data-guide={index === 0 ? 'guide-learner-profile-card' : undefined}
               >
                 <span>
                   <strong>{learner.name}</strong>

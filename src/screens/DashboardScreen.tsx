@@ -66,7 +66,7 @@ export function DashboardScreen({
         ]}
       />
 
-      <section>
+      <section data-tutorial="dashboard-tasks">
         <SectionHeader title="Tareas de hoy" description="Empieza por las tareas pendientes del día." />
         <div className="dashboard-task-list">
           {todaysTasks.map((task) => (

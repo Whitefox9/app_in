@@ -32,12 +32,16 @@ export function GroupCard({ group, operationalStatus, onOpen }: GroupCardProps) 
           <span>{group.shift}</span>
           <span>{group.locationType}</span>
         </div>
-        <div className={`group-operational-status ${operationalStatus.tone}`}>
+        <div
+          className={`group-operational-status ${operationalStatus.tone}`}
+          data-tutorial="group-operational-status"
+          data-guide="guide-group-operational-status"
+        >
           <span>Asistencia de hoy</span>
           <strong>{operationalStatus.label}</strong>
           <small>{operationalStatus.detail}</small>
         </div>
-        <div className="group-metric-row">
+        <div className="group-metric-row" data-guide="guide-group-main-data">
           <article>
             <strong>{group.learnerIds.length}</strong>
             <span>Aprendices</span>
@@ -52,7 +56,13 @@ export function GroupCard({ group, operationalStatus, onOpen }: GroupCardProps) 
           </article>
         </div>
       </div>
-      <button type="button" className="primary group-action" onClick={() => onOpen(group.id)}>
+      <button
+        type="button"
+        className="primary group-action"
+        onClick={() => onOpen(group.id)}
+        data-tutorial="enter-group"
+        data-guide="guide-enter-group"
+      >
         Entrar a la ficha →
       </button>
     </article>

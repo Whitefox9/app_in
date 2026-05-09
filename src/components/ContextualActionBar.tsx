@@ -24,6 +24,14 @@ export function ContextualActionBar({ secondary, primary }: ContextualActionBarP
           className="primary contextual-action-primary"
           onClick={primary.onClick}
           disabled={primary.disabled}
+          data-tutorial={primary.label.toLowerCase().includes('copiar') ? 'copy-report-action' : undefined}
+          data-guide={
+            primary.label.toLowerCase().includes('copiar')
+              ? 'guide-copy-report-action'
+              : primary.label.toLowerCase().includes('guardar asistencia')
+                ? 'guide-save-attendance-action'
+                : undefined
+          }
         >
           {primary.label}
         </button>

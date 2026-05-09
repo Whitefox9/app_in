@@ -145,17 +145,32 @@ export function AttendanceScreen({
             <span>Operación diaria</span>
           </div>
           <div className="attendance-quick-actions">
-            <button type="button" className="attendance-quick-action primary-action" onClick={() => setQuickAction('take')}>
+            <button
+              type="button"
+              className="attendance-quick-action primary-action"
+              onClick={() => setQuickAction('take')}
+              data-guide="guide-attendance-take"
+            >
               <span aria-hidden="true">A</span>
               <strong>Tomar asistencia</strong>
               <small>Selecciona una ficha y registra el llamado del día.</small>
             </button>
-            <button type="button" className="attendance-quick-action" onClick={() => setQuickAction('history')}>
+            <button
+              type="button"
+              className="attendance-quick-action"
+              onClick={() => setQuickAction('history')}
+              data-guide="guide-attendance-history"
+            >
               <span aria-hidden="true">H</span>
               <strong>Consultar asistencia</strong>
               <small>Busca llamados anteriores por fecha, mes o aprendiz.</small>
             </button>
-            <button type="button" className="attendance-quick-action" onClick={() => setQuickAction('reports')}>
+            <button
+              type="button"
+              className="attendance-quick-action"
+              onClick={() => setQuickAction('reports')}
+              data-guide="guide-attendance-report"
+            >
               <span aria-hidden="true">R</span>
               <strong>Generar reporte</strong>
               <small>Crea consolidados de asistencia para coordinación.</small>
@@ -270,7 +285,7 @@ export function AttendanceScreen({
         <label>
           Fecha del llamado
           <small className="field-guide">Toca para cambiar el día del llamado.</small>
-          <span className="date-picker-control">
+          <span className="date-picker-control" data-tutorial="attendance-date-field" data-guide="guide-attendance-date-field">
             <input type="date" value={date} onChange={(event) => handleDateChange(event.target.value)} />
             <span aria-hidden="true">Cambiar</span>
           </span>

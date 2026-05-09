@@ -431,15 +431,98 @@ select:focus {
   position: absolute;
   inset: 0;
   z-index: 40;
+  pointer-events: none;
+}
+
+.tutorial-overlay.modal {
   display: grid;
   place-items: center;
   padding: 20px;
-  background: rgba(11, 31, 58, 0.48);
+  background: rgba(11, 31, 58, 0.52);
   backdrop-filter: blur(10px);
+  pointer-events: auto;
+}
+
+.tutorial-overlay.contextual {
+  pointer-events: auto;
+}
+
+.tutorial-overlay.menu-only {
+  background: transparent;
+}
+
+.tutorial-highlight {
+  position: absolute;
+  border: 2px solid #fff;
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 999px rgba(11, 31, 58, 0.56),
+    0 0 0 6px rgba(21, 163, 199, 0.28),
+    0 16px 38px rgba(21, 163, 199, 0.28);
+  pointer-events: none;
+}
+
+.tutorial-highlight.bottom-nav-target {
+  border-width: 3px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 0 0 999px rgba(11, 31, 58, 0.58),
+    0 0 0 8px rgba(255, 255, 255, 0.26),
+    0 0 26px rgba(21, 163, 199, 0.64);
+}
+
+.tutorial-highlight.module-guide-highlight {
+  border-color: #e9fbff;
+  box-shadow:
+    0 0 0 999px rgba(11, 31, 58, 0.54),
+    0 0 0 7px rgba(21, 163, 199, 0.24),
+    0 14px 34px rgba(21, 163, 199, 0.3);
+}
+
+.tutorial-connector {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tutorial-connector .trail-aura {
+  fill: none;
+  stroke: rgba(158, 232, 255, 0.28);
+  stroke-width: 12;
+  stroke-linecap: round;
+  filter: blur(1px) drop-shadow(0 5px 12px rgba(21, 163, 199, 0.28));
+}
+
+.tutorial-connector .trail-core {
+  fill: none;
+  stroke: url("#tutorial-trail-gradient");
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 10 8;
+  filter: drop-shadow(0 4px 10px rgba(21, 163, 199, 0.52));
+}
+
+.tutorial-connector .trail-spark {
+  fill: #e9fbff;
+  stroke: rgba(255, 255, 255, 0.86);
+  stroke-width: 1;
+  filter: drop-shadow(0 0 8px rgba(158, 232, 255, 0.86));
+}
+
+.tutorial-connector .trail-point {
+  fill: #dff7ff;
+  filter:
+    drop-shadow(0 0 7px rgba(255, 255, 255, 0.88))
+    drop-shadow(0 0 12px rgba(21, 163, 199, 0.72));
 }
 
 .tutorial-card {
-  width: 100%;
+  z-index: 3;
   display: grid;
   gap: 14px;
   padding: 20px;
@@ -448,6 +531,20 @@ select:focus {
   border: 1px solid rgba(11, 31, 58, 0.08);
   box-shadow: 0 22px 50px rgba(11, 31, 58, 0.28);
   animation: screenFadeUp 260ms ease both;
+  pointer-events: auto;
+}
+
+.tutorial-overlay.modal .tutorial-card {
+  width: 100%;
+}
+
+.tutorial-overlay.contextual .tutorial-card {
+  position: absolute;
+}
+
+.tutorial-overlay.menu-only .tutorial-card {
+  max-height: calc(100% - 140px);
+  overflow-y: auto;
 }
 
 .tutorial-progress {
@@ -505,7 +602,22 @@ select:focus {
 
 .tutorial-actions {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
+  grid-template-columns: 0.9fr 0.9fr 1.25fr;
+  gap: 10px;
+}
+
+.tutorial-actions .secondary-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.module-guide-prompt .tutorial-card {
+  width: 100%;
+}
+
+.module-guide-prompt-actions {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: 10px;
 }
 

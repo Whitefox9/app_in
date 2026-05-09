@@ -23,6 +23,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
           className={activeTab === item.key ? 'nav-item active' : 'nav-item'}
           onClick={() => onTabChange(item.key)}
           aria-label={item.label}
+          data-tutorial={`bottom-nav-${item.key}`}
         >
           <span className="nav-icon" aria-hidden="true">
             {item.icon}

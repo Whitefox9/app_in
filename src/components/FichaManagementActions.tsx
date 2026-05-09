@@ -46,7 +46,7 @@ export function FichaManagementActions({
   }
 
   return (
-    <section className="management-panel">
+    <section className="management-panel" data-tutorial="group-management-actions" data-guide="guide-group-management-actions">
       <div className="list-header">
         <h2>¿Qué deseas hacer?</h2>
         <span>Centro operativo</span>
@@ -59,6 +59,7 @@ export function FichaManagementActions({
             type="button"
             className={`management-action-${action.key}`}
             onClick={handlers[action.key]}
+            data-guide={action.key === 'register' ? 'guide-register-attendance-action' : undefined}
           >
             <span aria-hidden="true">{action.icon}</span>
             <strong>{action.title}</strong>

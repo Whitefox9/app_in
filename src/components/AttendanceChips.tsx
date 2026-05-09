@@ -8,7 +8,13 @@ interface AttendanceChipsProps {
 
 export function AttendanceChips({ value, onChange }: AttendanceChipsProps) {
   return (
-    <div className="attendance-chips" role="group" aria-label="Estado de asistencia">
+    <div
+      className="attendance-chips"
+      role="group"
+      aria-label="Estado de asistencia"
+      data-tutorial="attendance-status-buttons"
+      data-guide="guide-attendance-status-buttons"
+    >
       {statusOptions.map((status) => (
         <button
           key={status}

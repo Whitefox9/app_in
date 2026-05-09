@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AppShell } from './components/AppShell'
+import {
+  ContextualGuide,
+  ModuleGuidePrompt,
+} from './components/ContextualGuide'
+import { contextualGuides, type ContextualGuideKey } from './components/contextualGuideData'
 import { GuidedTutorial } from './components/GuidedTutorial'
 import {
   attendanceRecords as initialAttendanceRecords,
@@ -37,6 +42,10 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isTutorialOpen, setIsTutorialOpen] = useState(false)
+  const [contextualGuidesEnabled, setContextualGuidesEnabled] = useState(false)
+  const [promptGuideKey, setPromptGuideKey] = useState<ContextualGuideKey | null>(null)
+  const [activeGuideKey, setActiveGuideKey] = useState<ContextualGuideKey | null>(null)
+  const [handledGuideKeys, setHandledGuideKeys] = useState<Set<ContextualGuideKey>>(new Set())
   const [activeTab, setActiveTab] = useState<TabKey>('home')
   const [activeView, setActiveView] = useState<AppView>('home')
   const [selectedGroupId, setSelectedGroupId] = useState(groups[0].id)
@@ -52,6 +61,28 @@ function App() {
     () => learners.filter((learner) => selectedGroup.learnerIds.includes(learner.id)),
     [selectedGroup],
   )
+  const currentGuideKey = useMemo<ContextualGuideKey | null>(() => {
+    if (activeView === 'fichas') return 'fichas'
+    if (activeView === 'groupDetail') return 'groupDetail'
+    if (activeView === 'groupReports') return 'reports'
+    if (activeView === 'attendance') return attendanceStartGroupId ? 'attendanceRegister' : 'attendance'
+    return null
+  }, [activeView, attendanceStartGroupId])
+
+  useEffect(() => {
+    if (!contextualGuidesEnabled || isTutorialOpen || activeGuideKey || promptGuideKey || !currentGuideKey) return
+    if (handledGuideKeys.has(currentGuideKey)) return
+
+    const timeout = window.setTimeout(() => setPromptGuideKey(currentGuideKey), 260)
+    return () => window.clearTimeout(timeout)
+  }, [
+    activeGuideKey,
+    contextualGuidesEnabled,
+    currentGuideKey,
+    handledGuideKeys,
+    isTutorialOpen,
+    promptGuideKey,
+  ])
 
   useEffect(() => {
     function handlePopState(event: PopStateEvent) {
@@ -152,8 +183,36 @@ function App() {
   function handleLogin(showTutorial: boolean) {
     setActiveTab('home')
     setActiveView('home')
+    setContextualGuidesEnabled(showTutorial)
+    setPromptGuideKey(null)
+    setActiveGuideKey(null)
+    setHandledGuideKeys(new Set())
     setIsLoggedIn(true)
     setIsTutorialOpen(showTutorial)
+  }
+
+  function finishTutorial() {
+    setIsTutorialOpen(false)
+    navigateToTab('home')
+  }
+
+  function markGuideHandled(guideKey: ContextualGuideKey) {
+    setHandledGuideKeys((current) => new Set(current).add(guideKey))
+  }
+
+  function skipContextualGuide(guideKey: ContextualGuideKey) {
+    markGuideHandled(guideKey)
+    setPromptGuideKey(null)
+  }
+
+  function startContextualGuide(guideKey: ContextualGuideKey) {
+    setPromptGuideKey(null)
+    setActiveGuideKey(guideKey)
+  }
+
+  function finishContextualGuide(guideKey: ContextualGuideKey) {
+    markGuideHandled(guideKey)
+    setActiveGuideKey(null)
   }
 
   if (!isLoggedIn) {
@@ -248,7 +307,22 @@ function App() {
       {activeView === 'reports' ? (
         <ReportsScreen records={attendanceRecords} groups={groups} onBack={() => navigateToTab('home')} />
       ) : null}
-      {isTutorialOpen ? <GuidedTutorial onFinish={() => setIsTutorialOpen(false)} /> : null}
+      {isTutorialOpen ? (
+        <GuidedTutorial onFinish={finishTutorial} />
+      ) : null}
+      {promptGuideKey ? (
+        <ModuleGuidePrompt
+          moduleName={contextualGuides[promptGuideKey].title.replace('Guía rápida de ', '')}
+          onAccept={() => startContextualGuide(promptGuideKey)}
+          onSkip={() => skipContextualGuide(promptGuideKey)}
+        />
+      ) : null}
+      {activeGuideKey ? (
+        <ContextualGuide
+          guide={contextualGuides[activeGuideKey]}
+          onFinish={() => finishContextualGuide(activeGuideKey)}
+        />
+      ) : null}
     </AppShell>
   )
 }

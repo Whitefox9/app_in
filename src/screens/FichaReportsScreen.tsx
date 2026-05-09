@@ -372,7 +372,12 @@ export function FichaReportsScreen({
         ]}
       />
 
-      <section className="report-mode-panel" aria-label="Tipos de reporte">
+      <section
+        className="report-mode-panel"
+        aria-label="Tipos de reporte"
+        data-tutorial="report-type-selector"
+        data-guide="guide-report-type-selector"
+      >
         <div>
           <h2>Selecciona el tipo de reporte</h2>
           <p>Elige si deseas consultar un reporte diario, acumulado o individual.</p>
@@ -401,7 +406,7 @@ export function FichaReportsScreen({
             <h2>Resumen diario</h2>
             <span>{dayRecord ? 'Datos disponibles' : 'Sin llamado'}</span>
           </div>
-          <label>
+          <label data-guide="guide-report-period-control">
             Fecha seleccionada
             <input type="date" value={selectedDate} onChange={(event) => setSelectedDate(event.target.value)} />
           </label>
