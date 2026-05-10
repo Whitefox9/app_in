@@ -120,6 +120,7 @@ export function AttendanceScreen({
           eyebrow="CONTROL DIARIO"
           title="Tomar asistencia"
           subtitle="Selecciona una ficha para iniciar el llamado."
+          variant="light"
           infoCards={[
             { label: 'Pendientes', value: Math.max(groups.length - registeredTodayCount, 0) },
             { label: 'Registradas', value: registeredTodayCount },
@@ -194,6 +195,7 @@ export function AttendanceScreen({
         title="Tomar asistencia"
         subtitle="Marca el estado de cada aprendiz para la fecha seleccionada."
         statusBadge={`Ficha ${activeGroup.number}`}
+        variant="light"
         infoCards={[
           { label: 'Ficha', value: activeGroup.number },
           { label: 'Fecha', value: date },

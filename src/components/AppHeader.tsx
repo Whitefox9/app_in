@@ -15,7 +15,7 @@ interface AppHeaderProps {
   statusBadge?: string
   infoCards?: AppHeaderInfoCard[]
   backButton?: AppHeaderBackButton
-  variant?: 'default' | 'compact'
+  variant?: 'default' | 'compact' | 'light'
 }
 
 export function AppHeader({

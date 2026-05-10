@@ -59,6 +59,7 @@ export function GroupsScreen({ groups, sessions, records, onOpenGroup }: GroupsS
         eyebrow="INSTRUCTOR"
         title="Mis fichas"
         subtitle="Consulta y gestiona tus grupos asignados."
+        variant="light"
         infoCards={[
           { label: 'Fichas activas', value: activeGroups },
           { label: 'Aprendices', value: totalLearners },
